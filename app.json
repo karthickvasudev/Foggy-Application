@@ -25,6 +25,12 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "add24315-761f-494c-bc24-6d8f0e0a267c"
+      }
+    },
+    "owner": "karthickvasudevan143"
   }
 }
