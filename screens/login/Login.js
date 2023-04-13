@@ -1,10 +1,9 @@
 import {useEffect, useState} from "react";
 
-import {Dimensions, ImageBackground, Platform, StyleSheet, ToastAndroid} from "react-native";
+import {Dimensions, ImageBackground,StyleSheet, ToastAndroid} from "react-native";
 import {GetProfileApi, LoginApi} from "../apihelper/AppApi";
-import {Icon, Input, Pressable, View} from "native-base";
+import {View} from "native-base";
 import {AppColor} from "../../constants/AppColor";
-import {MaterialIcons} from "@expo/vector-icons";
 import PrimaryButton from "../../constants/PrimaryButton";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import CustomTextInput from "../../constants/CustomTextInput";
@@ -89,7 +88,7 @@ export default function Login(props) {
                     onChange={e => setPassword(e.nativeEvent.text)}
                 />
             </View>
-            <View mt={5}>
+            <View mt={5} w={"100%"} px={10}>
                 <PrimaryButton name={'Login'} onPress={() => loginHandler(userName, password)}/>
             </View>
         </View>

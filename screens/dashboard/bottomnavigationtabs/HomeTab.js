@@ -121,7 +121,7 @@ const CustomTobTab = (props) => {
                     </TouchableOpacity>
                 }
             )}
-        < /ScrollView>
+        </ScrollView>
     </View>
 }
 

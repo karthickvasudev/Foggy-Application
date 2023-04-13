@@ -1,4 +1,4 @@
-const baseUrl = "http://192.168.1.8:8080"
+const baseUrl = "http://192.168.1.10:8080"
 export const Post = (endpoint, body, header) => {
     return fetch(`${baseUrl}${endpoint}`, {
         method: 'POST',
