@@ -3,9 +3,11 @@ import {Text, View} from "native-base";
 import {raisedLook} from "../../constants/ReuseStyle";
 import {AppColor} from "../../constants/AppColor";
 
-export default function CompletedOrderListViewHolder() {
+export default function CompletedOrderListViewHolder({order, onClick, onContextClick}) {
     return <>
-        <TouchableOpacity activeOpacity={0.6}>
+        <TouchableOpacity activeOpacity={0.6}
+                          onPress={onClick}
+                          onLongPress={onContextClick}>
             <View style={raisedLook}
                   backgroundColor={AppColor.accent}
                   width={Dimensions.get('window').width - 30}
@@ -19,7 +21,7 @@ export default function CompletedOrderListViewHolder() {
                     color={AppColor.primary}
                     bold
                 >
-                    #ORD-00001
+                    {`#${order.id}`}
                 </Text>
 
                 <View flexDirection={"row"}
@@ -28,10 +30,10 @@ export default function CompletedOrderListViewHolder() {
                     <View>
                         <Text paddingTop={.5}
                               fontWeight={'bold'}
-                              color={AppColor.primary}>Karthick</Text>
+                              color={AppColor.primary}>{order.customer.name}</Text>
                         <Text paddingTop={.5}
                               fontWeight={'bold'}
-                              color={AppColor.primary}>8072175428</Text>
+                              color={AppColor.primary}>{order.customer.phoneNumber}</Text>
                     </View>
 
                     <View flexDirection={"row"}>
@@ -39,7 +41,7 @@ export default function CompletedOrderListViewHolder() {
                               bold
                               color={AppColor.primary}>Count : </Text>
                         <Text paddingTop={.5}
-                              color={AppColor.primary}>5</Text>
+                              color={AppColor.primary}>{order.count}</Text>
                     </View>
 
                     <View flexDirection={"row"}>
@@ -47,7 +49,7 @@ export default function CompletedOrderListViewHolder() {
                               bold
                               color={AppColor.primary}>Price : </Text>
                         <Text paddingTop={.5}
-                              color={AppColor.primary}>₹ 200</Text>
+                              color={AppColor.primary}>{`₹ ${order.orderPaymentDetails.totalBillAmount}`}</Text>
                     </View>
                 </View>
 

@@ -8,7 +8,6 @@ import {CancelOrderApi, CompleteOrderApi} from "../apihelper/AppApi";
 function InUnitContextMenu({order, isOpen, onOpen, onClose}) {
     const navigation = useNavigation()
     const confirmationDialogRef = useRef(null)
-// console.log(confirmationDialogRef.current.getSmsCheckBoxStatus());
 
     const resendSmsConfirmationDialog = {
         title: "Resend SMS",

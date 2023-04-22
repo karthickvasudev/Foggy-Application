@@ -1,54 +1,67 @@
 import React from 'react';
-import {Box, Card, Center, Heading, HStack, Text} from "native-base";
-import {ProgressBar} from "react-native-paper";
+import TodayReport from "./TodayReport";
+import {Card, Center, HStack, Text} from "native-base";
+import {MaterialCommunityIcons} from "@expo/vector-icons";
 import {AppColor} from "../../constants/AppColor";
-import {chartConfig, rupee_symbol} from "../../constants/Constants";
-import {PieChart} from "react-native-chart-kit";
-import {Dimensions} from "react-native";
+import {ToastAndroid, TouchableOpacity} from "react-native";
+import {useNavigation} from "@react-navigation/native";
+import {GetMonthStatus, GetYearlyStatus} from "../apihelper/AppApi";
+
 
 function ReportHomePage(props) {
-    const data = [
+    let navigation = useNavigation();
+    const links = [
         {
-            name: "Toronto",
-            population: 2800000,
-            color: "#FFD700",
-            legendFontColor: "#7F7F7F",
-            legendFontSize: 15
+            name: 'Month',
+            icon: 'calendar-month',
+            action: async () => {
+                let rawResponse = await GetMonthStatus();
+                if (rawResponse.status === 200) {
+                    let response = await rawResponse.json();
+                    let data = {
+                        monthly: response,
+                        daysForChart: response.monthList.map(m => m.date.split("-")[0]).reverse(),
+                        dataForChart: response.monthList.map(m => m.revenue).reverse()
+                    }
+                    navigation.navigate("Month Report", data)
+                }
+            }
         },
-    ];
+        {
+            name: 'Yearly',
+            icon: 'calendar-blank-multiple',
+            action: async () => {
+                navigation.navigate("Yearly Report")
+            }
+        }
+    ]
+    const Links = () => {
+        return <>
+            <HStack justifyContent={"center"} space={2}>
+                {
+                    links.map((link, index) => {
+                        return <Center alignSelf={"stretch"} key={index}>
+                            <TouchableOpacity activeOpacity={0.6} onPress={link.action}>
+                                <Card borderRadius={10} backgroundColor={AppColor.accent} w={100}>
+                                    <Center>
+                                        <MaterialCommunityIcons name={link.icon} size={30}
+                                                                color={AppColor.primary}/>
+                                        <Text>{link.name}</Text>
+                                    </Center>
+                                </Card>
+                            </TouchableOpacity>
+                        </Center>
+                    })
+                }
+            </HStack>
+
+        </>
+    }
+
     return (
         <>
-            <Card backgroundColor={AppColor.accent} m={5}>
-                <Heading fontSize={18}>Today</Heading>
-                <Box>
-                    <Center mt={3}>
-                        <HStack alignItems={"center"}>
-                            <Text bold>Revenue : </Text>
-                            <Text fontSize={18}>{`${rupee_symbol} 100`}</Text>
-                        </HStack>
-                    </Center>
-                    <ProgressBar style={{height: 20, borderRadius: 10}}
-                                 progress={.5}
-                                 animatedValue={.5}
-                                 indeterminate={true}
-                                 color="#49B5F2"/>
-                    <Box alignSelf={"flex-end"} alignItems={"center"} mt={1}>
-                        <Text bold>Yesterday</Text>
-                        <Text>{`${rupee_symbol} 1000`}</Text>
-                    </Box>
-                </Box>
-
-                <Box>
-                    <PieChart data={data}
-                              width={Dimensions.get("window").width-100}
-                              height={120}
-                              chartConfig={chartConfig}
-                              accessor={"population"}
-                              backgroundColor={"transparent"}
-                              absolute
-                              />
-                </Box>
-            </Card>
+            <TodayReport/>
+            <Links/>
         </>
     );
 }

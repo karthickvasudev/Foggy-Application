@@ -1,6 +1,6 @@
 import {useIsFocused} from "@react-navigation/native";
 import {useEffect, useState} from "react";
-import {GetProfileApi} from "../../apihelper/AppApi";
+import {GetDashboardTile, GetProfileApi} from "../../apihelper/AppApi";
 import {HStack, ScrollView, View, Text} from "native-base";
 import {raisedLook} from "../../../constants/ReuseStyle";
 import {AppColor} from "../../../constants/AppColor";
@@ -9,11 +9,13 @@ import {createMaterialTopTabNavigator} from "@react-navigation/material-top-tabs
 import NewOrderListTodayTile from "../todaytilescreens/NewOrderListTodayTile";
 import CompletedOrderListTodayTile from "../todaytilescreens/CompletedOrderListTodayTile";
 import DeliveredOrderListTodayTile from "../todaytilescreens/DeliveredOrderListTodayTile";
+import OnlineOrderListTile from "../todaytilescreens/OnlineOrderListTile";
 
 const TopTabNavigator = createMaterialTopTabNavigator();
 export const HomeTab = (props) => {
     const isResume = useIsFocused()
     const [profile, setProfile] = useState()
+    const [tile, setTile] = useState()
     useEffect(() => {
         const asyncFunction = async () => {
             try {
@@ -25,10 +27,20 @@ export const HomeTab = (props) => {
             } catch (err) {
                 console.log(err)
             }
+
+            try {
+                let rawResponse = await GetDashboardTile();
+                if (rawResponse.status === 200) {
+                    let response = await rawResponse.json()
+                    setTile(response)
+                }
+            } catch (err) {
+                console.log(err)
+            }
         }
         if (isResume)
             asyncFunction()
-    }, [isResume])
+    }, [])
 
     const SmallTiles = ({name, value}) => {
         return <View
@@ -63,8 +75,8 @@ export const HomeTab = (props) => {
                   p={3}
             >
                 <HStack space={12}>
-                    <SmallTiles name={"Orders"} value={1}/>
-                    <SmallTiles name={"Revenue"} value={`$ 1`}/>
+                    <SmallTiles name={"Orders"} value={tile?.totalOrders}/>
+                    <SmallTiles name={"Revenue"} value={`$ ${tile?.revenue}`}/>
                 </HStack>
             </View>
         </>
@@ -92,7 +104,7 @@ export const HomeTab = (props) => {
 
 const CustomTobTab = (props) => {
     return <View py={2} alignItems={"center"}>
-        <ScrollView horizontal={true}>
+        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
             {props.state.routes.map((route, index) => {
                     const status = (props.state.index === index)
                     return <TouchableOpacity key={index}
@@ -131,7 +143,7 @@ const TodayOrders = () => {
             initialRouteName={"New"}
             tabBar={(props) => <CustomTobTab {...props} />}
         >
-            <TopTabNavigator.Screen name={"Online"} component={NewOrderListTodayTile}/>
+            <TopTabNavigator.Screen name={"Online"} component={OnlineOrderListTile}/>
             <TopTabNavigator.Screen name={"New"} component={NewOrderListTodayTile}/>
             <TopTabNavigator.Screen name={"Completed"} component={CompletedOrderListTodayTile}/>
             <TopTabNavigator.Screen name={"Delivered"} component={DeliveredOrderListTodayTile}/>

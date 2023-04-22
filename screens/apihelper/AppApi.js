@@ -87,16 +87,39 @@ export const CancelOrderApi = async (orderId) => {
 }
 
 export const PayingLaterDeliveryApi = async (orderId, body) => {
-    return Put(`/api/v1/orders/${orderId}/payinglater/delivery`, body, await defaultHeader())
+    return Put(`/api/v1/orders/${orderId}/paying-later/delivery`, body, await defaultHeader())
 }
 export const PayingNowDeliveryApi = async (orderId, body) => {
-    return Put(`/api/v1/orders/${orderId}/payingnow/delivery`, body, await defaultHeader())
+    return Put(`/api/v1/orders/${orderId}/paying-now/delivery`, body, await defaultHeader())
 }
 
-export const AddPaymentToOrder =async (orderId, body) => {
-    return Post(`/api/v1/payments/${orderId}/addpayment`, body, await defaultHeader())
+export const AddPaymentToOrder = async (orderId, body) => {
+    return Post(`/api/v1/payments/${orderId}/add-payment`, body, await defaultHeader())
 }
 
-export const GetCreditList =async () => {
+export const GetCreditList = async () => {
     return Get(`/api/v1/credits`, await defaultHeader())
+}
+
+export const GetDashboardTile = async () => {
+    return Get('/api/v1/dashboard-tiles', await defaultHeader())
+}
+
+export const GetTodayNewOrder = async () =>     {
+    return Get('/api/v1/orders/today-new', await defaultHeader())
+}
+
+export const GetTodayCompletedOrder = async () => {
+    return Get('/api/v1/orders/today-completed', await defaultHeader())
+}
+
+export const GetTodayStatus = async () => {
+    return Get('/api/v1/report/today', await defaultHeader())
+}
+
+export const GetMonthStatus = async () => {
+    return Get('/api/v1/report/month', await defaultHeader())
+}
+export const GetYearlyStatus = async () => {
+    return Get('/api/v1/report/yearly', await defaultHeader())
 }

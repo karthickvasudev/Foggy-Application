@@ -3,9 +3,9 @@ import {Text, View} from "native-base";
 import {raisedLook} from "../../constants/ReuseStyle";
 import {AppColor} from "../../constants/AppColor";
 
-export default function NewOrderListViewHolder() {
+export default function NewOrderListViewHolder({order,onClick,onContextClick}) {
     return <>
-        <TouchableOpacity activeOpacity={0.6}>
+        <TouchableOpacity activeOpacity={0.6} onPress={onClick} onLongPress={onContextClick}>
             <View style={raisedLook}
                   backgroundColor={AppColor.accent}
                   width={Dimensions.get('window').width - 30}
@@ -19,7 +19,7 @@ export default function NewOrderListViewHolder() {
                     color={AppColor.primary}
                     bold
                 >
-                    #ORD-00001
+                    {`#${order.id}`}
                 </Text>
 
                 <View flexDirection={"row"}
@@ -28,10 +28,10 @@ export default function NewOrderListViewHolder() {
                     <View>
                         <Text paddingTop={.5}
                               fontWeight={'bold'}
-                              color={AppColor.primary}>Karthick</Text>
+                              color={AppColor.primary}>{order.customer.name}</Text>
                         <Text paddingTop={.5}
                               fontWeight={'bold'}
-                              color={AppColor.primary}>8072175428</Text>
+                              color={AppColor.primary}>{order.customer.phoneNumber}</Text>
                     </View>
 
                     <View flexDirection={"row"}>
@@ -39,7 +39,7 @@ export default function NewOrderListViewHolder() {
                               bold
                               color={AppColor.primary}>Count : </Text>
                         <Text paddingTop={.5}
-                              color={AppColor.primary}>5</Text>
+                              color={AppColor.primary}>{order.count}</Text>
                     </View>
 
                     <View>
@@ -47,9 +47,9 @@ export default function NewOrderListViewHolder() {
                               bold
                               color={AppColor.primary}>Delivery Date :</Text>
                         <Text paddingTop={.5}
-                              color={AppColor.primary}>18-Mar-2023</Text>
+                              color={AppColor.primary}>{order.expectedDeliveryDate.split(" ")[0]}</Text>
                         <Text paddingTop={.5}
-                              color={AppColor.primary}>11:30:00AM</Text>
+                              color={AppColor.primary}>{order.expectedDeliveryDate.split(" ")[1]}</Text>
                     </View>
                 </View>
 

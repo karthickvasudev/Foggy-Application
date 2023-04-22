@@ -15,6 +15,10 @@ import UpdateCustomer from "./screens/customer/UpdateCustomer";
 import CreateOrder from "./screens/orders/CreateOrder";
 import ViewOrder from "./screens/orders/ViewOrder";
 import UpdateOrder from "./screens/orders/UpdateOrder";
+import ReceivePayment from "./screens/receivepayment/ReceivePayment";
+import OrderList from "./screens/orders/OrderList";
+import YearlyReport from "./screens/report/YearlyReport";
+import MonthReport from "./screens/report/MonthReport";
 
 const Stack = createStackNavigator();
 export default function App() {
@@ -77,6 +81,10 @@ export default function App() {
 
             {/* Orders */}
             <Stack.Screen
+                name="Order List"
+                component={OrderList}
+            />
+            <Stack.Screen
               name="Create Order"
               component={CreateOrder}
             />
@@ -87,8 +95,23 @@ export default function App() {
             <Stack.Screen
               name="Update Order"
               component={UpdateOrder}
-            />  
+            />
 
+            {/* Receive Payment */}
+            <Stack.Screen
+                name="Receive Payment"
+                component={ReceivePayment}
+            />
+
+            {/* report */}
+            <Stack.Screen
+                name="Yearly Report"
+                component={YearlyReport}
+            />
+            <Stack.Screen
+                name="Month Report"
+                component={MonthReport}
+            />
             
             
           </Stack.Navigator>

@@ -19,6 +19,9 @@ import {CreateOrderApi, GetListOfCustomer, GetListOfProducts} from "../apihelper
 import {reuseStyle} from "../../constants/ReuseStyle";
 import PrimaryButton from "../../constants/PrimaryButton";
 import {rupee_symbol} from "../../constants/Constants";
+import SelectCustomerViewHolder from "./SelectCustomerViewHolder";
+import {FlashList} from "@shopify/flash-list";
+import EmptyCenterContent from "../../constants/EmptyCenterContent";
 
 export default function CreateOrder(props) {
     const isResume = useIsFocused()
@@ -98,34 +101,36 @@ export default function CreateOrder(props) {
                 <AlertDialog.Content>
                     <AlertDialog.CloseButton/>
                     <AlertDialog.Header>Select Customer</AlertDialog.Header>
-                    <AlertDialog.Body>
+                    <AlertDialog.Header>
                         <View mb={3}>
                             <CustomTextInput placeholder={"search"}
                                              icon={{name: 'search1', size: 18, color: AppColor.primary}}
                                              onChange={(e) => setSearch(e.nativeEvent.text)}
                             />
                         </View>
-                        <ScrollView horizontal={false}>
-                            {
-                                filteredCustomers.map((customer, index) => {
-                                    return <TouchableOpacity activeOpacity={0.6}
-                                                             key={index}
-                                                             onPress={() => {
-                                                                 setCustomerDetails({
-                                                                     ...customerDetails,
-                                                                     name: customer.name,
-                                                                     phoneNumber: customer.phoneNumber
-                                                                 })
-                                                                 setCustomerSelectionDialogFlag(!customerSelectionDialogFlag)
-                                                             }}>
-                                        <View borderBottomColor={"black"} borderBottomWidth={1} my={1}>
-                                            <Text bold>{customer.name}</Text>
-                                            <Text mb={2}>{customer.phoneNumber}</Text>
-                                        </View>
-                                    </TouchableOpacity>
-                                })
-                            }
-                        </ScrollView>
+                    </AlertDialog.Header>
+                    <AlertDialog.Body>
+
+                        <View w={"100%"} h={Dimensions.get("window").height * 0.50}>
+                            <FlashList renderItem={({item}) => {
+                                let customer = item
+                                return <SelectCustomerViewHolder
+                                    customer={customer}
+                                    onClick={() => {
+                                        setCustomerDetails({
+                                            ...customerDetails,
+                                            name: customer.name,
+                                            phoneNumber: customer.phoneNumber
+                                        })
+                                        setCustomerSelectionDialogFlag(!customerSelectionDialogFlag)
+                                    }}/>
+                            }}
+
+                                       data={filteredCustomers}
+                                       estimatedItemSize={500}
+                                       ListEmptyComponent={<EmptyCenterContent content={'No Customers!'}/>}
+                            />
+                        </View>
                     </AlertDialog.Body>
                 </AlertDialog.Content>
             </AlertDialog>
